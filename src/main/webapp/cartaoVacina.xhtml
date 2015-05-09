@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Vacina Manter Cartão Vacina</title>
+</h:head>
+<h:body>
+	<h:form id="formulario">
+		<p:growl id="mensagem" />
+
+		<h:panelGrid columns="2" id="painelDados">
+			<p:outputLabel value="Código:" />
+			<p:inputText size="10" readonly="true" value="#{cartaoVacinaBean.cartaoVacina.codigo}" />
+
+			<p:outputLabel value="Nome:" />
+			<p:inputText size="30" maxlength="50" value="#{cartaoVacinaBean.cartaoVacina.descricao}" required="true"/>
+
+			<p:outputLabel value="Login:" />
+			<p:inputText size="30" maxlength="20" value="#{cartaoVacinaBean.cartaoVacina.login}" required="true"/>
+			
+			<p:outputLabel value="Senha:" />
+			<p:password size="30" maxlength="20" value="#{cartaoVacinaBean.cartaoVacina.senha}" required="true"/>
+			
+			<p:outputLabel value="Data Nascimento:" />
+			<p:calendar value="#{cartaoVacinaBean.cartaoVacina.dataNascimento}" required="true" />
+			
+		</h:panelGrid>
+
+		<h:panelGrid columns="4">
+			<p:commandButton value="Salvar" actionListener="#{cartaoVacinaBean.salvar}" update=":formulario:mensagem :formulario:painelDados :formulario:tabela" />
+			<p:commandButton value="Limpar" />
+			<p:commandButton value="Excluir" />
+			<p:commandButton value="Editar" />
+		</h:panelGrid>
+
+		<p:separator />
+
+		<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+			paginator="true" value="#{cartaoVacinaBean.cartaoVacinas}" var="cursor" rows="20" sortBy="#{cursor.codigo}">
+			<p:column headerText="Código">
+				<h:outputText value="#{cursor.codigo}"/>
+			</p:column>
+			<p:column headerText="Nome" sortBy="#{cursor.descricao}"
+				filterBy="#{cursor.descricao}">
+				<h:outputText value="#{cursor.descricao}"/>
+			</p:column>
+			<p:column headerText="Usuario" sortBy="#{cursor.login}"
+				filterBy="#{cursor.login}">
+				<h:outputText value="#{cursor.login}"/>
+			</p:column>
+			<p:column headerText="Data de Nasc." >
+				<h:outputText value="#{cursor.dataNascimento}"/>
+			</p:column>
+			<p:column headerText="Opções">
+				<p:commandButton icon="ui-icon-search" update=":formulario:painelDados">
+					<f:setPropertyActionListener target="#{cartaoVacinaBean.cartaoVacina}" 
+							value="#{cursor}" />
+				</p:commandButton> 
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</h:body>
+</html>
