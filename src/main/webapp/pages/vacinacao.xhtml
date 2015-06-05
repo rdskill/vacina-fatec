@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Drogaria</title>
+</h:head>
+<h:body>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" header="SiGVac - Vacinacao" />
+		
+		<p:layoutUnit position="west">
+			<ui:include src="/includes/menu.xhtml" />
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+			<h:form id="formulario">
+				<p:growl id="mensagem" />
+
+				<h:panelGrid id="painelDados" columns="1">
+					<p:outputLabel value="Código:" />
+					<p:inputText size="10" readonly="true"
+						value="#{vacinacaoBean.vacinacao.codigo}" />
+
+					<p:outputLabel value="Vacina:" />
+					<p:selectOneMenu value="#{vacinacaoBean.vacinacao.vacina}"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione uma vacina" />
+						<f:selectItems value="#{vacinacaoBean.vacinas}" var="vacCursor"
+							itemValue="#{catCursor}" itemLabel="#{vacCursor.descricao}" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel value="Cartão Vacina:" />
+					<p:selectOneMenu value="#{vacinacaoBean.vacinacao.cartaoVacina}"
+						converter="omnifaces.SelectItemsConverter">
+						<f:selectItem noSelectionOption="true"
+							itemLabel="Selecione um cartão vacina" />
+						<f:selectItems value="#{vacinacaoBean.cartoesVacina}" var="carCursor"
+							itemValue="#{catCursor}" itemLabel="#{carCursor.descricao}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+
+				<h:panelGrid columns="4">
+					<p:commandButton value="Incluir"
+						actionListener="#{vacinacaoBean.incluir}"
+						update=":formulario:mensagem :formulario:painelDados :formulario:tabela" />
+					<p:commandButton value="Limpar"
+						actionListener="#{vacinacaoBean.iniciar}"
+						update=":formulario:painelDados :formulario:tabela" />
+					<p:commandButton value="Excluir"
+						actionListener="#{vacinacaoBean.excluir}"
+						update=":formulario:mensagem :formulario:painelDados :formulario:tabela" />
+					<p:commandButton value="Editar"
+						actionListener="#{vacinacaoBean.editar}"
+						update=":formulario:mensagem :formulario:painelDados :formulario:tabela" />
+				</h:panelGrid>
+
+				<p:separator />
+
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+					paginator="true" rows="5" value="#{vacinacaoBean.vacinacoes}"
+					var="vacinacaoCursor">
+					<p:column headerText="Código">
+						<h:outputText value="#{vacinacaoCursor.codigo}" />
+					</p:column>
+					<p:column headerText="Data">
+						<h:outputText value="#{vacinacaoCursor.dataVacinacao}" />
+					</p:column>
+					<p:column headerText="Cartão Vacina">
+						<h:outputText value="#{vacinacaoCursor.cartaoVacina.descricao}" />
+					</p:column>
+					<p:column headerText="Vacina">
+						<h:outputText value="#{vacinacaoCursor.vacina.descricao}" />
+					</p:column>
+					<p:column headerText="Opções">
+						<p:commandButton value="Selecionar" update=":formulario:painelDados">
+							<f:setPropertyActionListener target="#{vacinacaoBean.vacinacao}"
+								value="#{vacinacaoCursor}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

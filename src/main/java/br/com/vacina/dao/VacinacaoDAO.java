@@ -29,6 +29,46 @@ public class VacinacaoDAO {
 		}
 	}
 	
+	public Vacinacao editar(Vacinacao categoria) {
+		Session sessao = HibernateUtil.getSessionFactory().openSession();
+		Transaction transacao = null;
+
+		try {
+			transacao = sessao.beginTransaction();
+			sessao.update(categoria);
+			transacao.commit();
+		} catch (RuntimeException runtimeException) {
+			if (transacao != null) {
+				transacao.rollback();
+			}
+			throw runtimeException;
+		} finally {
+			sessao.close();
+		}
+		
+		return categoria;
+	}
+	
+	public Vacinacao excluir(Vacinacao categoria) {
+		Session sessao = HibernateUtil.getSessionFactory().openSession();
+		Transaction transacao = null;
+
+		try {
+			transacao = sessao.beginTransaction();
+			sessao.delete(categoria);
+			transacao.commit();
+		} catch (RuntimeException runtimeException) {
+			if (transacao != null) {
+				transacao.rollback();
+			}
+			throw runtimeException;
+		} finally {
+			sessao.close();
+		}
+		
+		return categoria;
+	}
+	
 	public List<Vacinacao> listar() {
 		Session sessao = HibernateUtil.getSessionFactory().openSession();
 		List<Vacinacao> vacinacao = null;

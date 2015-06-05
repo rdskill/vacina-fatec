@@ -29,6 +29,46 @@ public class VacinaDAO {
 		}
 	}
 	
+	public Vacina editar(Vacina categoria) {
+		Session sessao = HibernateUtil.getSessionFactory().openSession();
+		Transaction transacao = null;
+
+		try {
+			transacao = sessao.beginTransaction();
+			sessao.update(categoria);
+			transacao.commit();
+		} catch (RuntimeException runtimeException) {
+			if (transacao != null) {
+				transacao.rollback();
+			}
+			throw runtimeException;
+		} finally {
+			sessao.close();
+		}
+		
+		return categoria;
+	}
+	
+	public Vacina excluir(Vacina categoria) {
+		Session sessao = HibernateUtil.getSessionFactory().openSession();
+		Transaction transacao = null;
+
+		try {
+			transacao = sessao.beginTransaction();
+			sessao.delete(categoria);
+			transacao.commit();
+		} catch (RuntimeException runtimeException) {
+			if (transacao != null) {
+				transacao.rollback();
+			}
+			throw runtimeException;
+		} finally {
+			sessao.close();
+		}
+		
+		return categoria;
+	}
+	
 	public List<Vacina> listar() {
 		Session sessao = HibernateUtil.getSessionFactory().openSession();
 		List<Vacina> vacina = null;
